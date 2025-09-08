@@ -12,9 +12,7 @@ export const supabaseServer = async () => {
                 getAll() {
                     return cookieStore.getAll();
                 },
-                // No setAll here—RSCs can’t write cookies
                 setAll() {
-                    // intentionally no-op in RSC
                 },
             },
         }

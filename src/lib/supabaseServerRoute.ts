@@ -12,13 +12,11 @@ export const supabaseServerRoute = async () => {
                 getAll() {
                     return cookieStore.getAll();
                 },
-                // In a Route Handler, you can directly set cookies on the request cookie store:
                 setAll(cookiesToSet) {
                     cookiesToSet.forEach(({ name, value, options }) => {
                         cookieStore.set({
                             name,
                             value,
-                            // Path is important or cookies may not be sent on subsequent requests
                             path: options?.path ?? "/",
                             ...options,
                         } as CookieOptions & { name: string; value: string });

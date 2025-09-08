@@ -1,36 +1,56 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Novo Canere
+
+A web application for karaoke lovers.
 
 ## Getting Started
 
-First, run the development server:
+These instructions will get you a copy of the project up and running on your local machine for development and testing purposes.
 
-```bash
+### Prerequisites
+
+- Node.js (v20 or later)
+- npm
+
+### Installation
+
+1. Clone the repo
+   ```sh
+   git clone https://github.com/your_username/novo-canere.git
+   ```
+2. Install NPM packages
+   ```sh
+   npm install
+   ```
+
+### Configuration
+
+1.  Create a new project on [Supabase](https://supabase.com/).
+2.  Go to your project's settings and copy the `Project URL` and `anon` key.
+3.  Create a `.env.local` file in the root of the project and add the following lines:
+
+    ```
+    NEXT_PUBLIC_SUPABASE_URL=YOUR_PROJECT_URL
+    NEXT_PUBLIC_SUPABASE_ANON_KEY=YOUR_ANON_KEY
+    ```
+
+4.  In your Supabase project, create a new table called `songs` with the following columns:
+    -   `id` (uuid)
+    -   `title` (text)
+    -   `artist` (text)
+    -   `lrc` (text)
+    -   `user_id` (uuid)
+
+### Running the application
+
+```sh
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
 Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## Built With
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
-
-## Learn More
-
-To learn more about Next.js, take a look at the following resources:
-
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+*   [Next.js](https://nextjs.org/) - The React Framework for Production
+*   [Supabase](https://supabase.io/) - The open source Firebase alternative
+*   [Tailwind CSS](https://tailwindcss.com/) - A utility-first CSS framework
+*   [TypeScript](https://www.typescriptlang.org/) - Typed JavaScript at Any Scale.

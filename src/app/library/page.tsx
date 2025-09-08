@@ -14,7 +14,6 @@ async function LibraryPage() {
     const { data: { session } } = await supabase.auth.getSession();
 
     if (!session) {
-        // Using a query param to show a message on the homepage
         redirect('/?message=Please log in to view your library.');
     }
 
@@ -26,7 +25,6 @@ async function LibraryPage() {
 
     if (error) {
         console.error('Error fetching songs:', error);
-        // You might want to render an error state here
     }
 
     return (

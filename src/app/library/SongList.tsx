@@ -53,7 +53,6 @@ export default function SongList({ songs: initialSongs }: { songs: Song[] }) {
   };
 
   const handlePlay = (song: Song) => {
-    // Navigate to karaoke screen with this song id
     router.push(`/karaoke/${song.id}`);
   };
 

@@ -98,19 +98,14 @@ export default function SetupPage() {
         if (!audioFile || !songData || !session) return;
 
         try {
-            // 1. Parse lyrics using the custom parser
             const lrc_parsed = parseLrc(songData.syncedLyrics || "");
-
             setStatus("Uploading audio file…");
-
-            // 2. Prepare file path
             const artistSlug = slugify(songData.artistName || "artist");
             const trackSlug = slugify(songData.trackName || "track");
             const ext = audioFile.name.split(".").pop() || "bin";
             const fileName = `${Date.now()}-original.${ext}`;
             const storagePath = `${artistSlug}/${trackSlug}/${fileName}`;
 
-            // 3. Upload file to storage
             const { error: uploadErr } = await supabase.storage
                 .from(BUCKET)
                 .upload(storagePath, audioFile, {
@@ -122,7 +117,6 @@ export default function SetupPage() {
                 throw uploadErr;
             }
 
-            // 4. Insert metadata into database
             setStatus("Saving song details to database…");
             const { error: insertErr } = await supabase.from("songs").insert({
                 user_id: session.user.id,
@@ -137,7 +131,6 @@ export default function SetupPage() {
                 throw insertErr;
             }
 
-            // 5. Success
             const { data: pub } = supabase.storage.from(BUCKET).getPublicUrl(storagePath);
             setUploadedUrl(pub.publicUrl);
             setStatus("✅ Song saved successfully!");
@@ -162,7 +155,6 @@ export default function SetupPage() {
     return (
         <main className="min-h-screen bg-gray-50 py-12">
             <div className="max-w-2xl mx-auto px-6">
-                {/* Header */}
                 <div className="mb-8">
                     <button
                         onClick={() => router.back()}
@@ -175,7 +167,6 @@ export default function SetupPage() {
                     <p className="text-gray-600">Upload an MP3 file to start your karaoke session</p>
                 </div>
 
-                {/* Song Info */}
                 <div className="bg-white rounded-lg border border-gray-200 p-6 mb-8">
                     <div className="flex items-center gap-3 mb-4">
                         <Music className="w-5 h-5 text-gray-400" />
@@ -189,7 +180,6 @@ export default function SetupPage() {
                     </div>
                 </div>
 
-                {/* File Upload */}
                 <div className="bg-white rounded-lg border border-gray-200 p-6 mb-8">
                     <h3 className="font-medium text-gray-900 mb-4">Upload Audio File</h3>
 
@@ -231,7 +221,6 @@ export default function SetupPage() {
                     </div>
                 </div>
 
-                {/* Start Button */}
                 {session ? (
                     <button
                         onClick={handleStartKaraoke}
@@ -246,7 +235,6 @@ export default function SetupPage() {
                     <AuthButtons />
                 )}
 
-                {/* Status / URL */}
                 <div className="mt-4">
                     {status && <p className="text-sm text-gray-600">{status}</p>}
                     {uploadedUrl && (
