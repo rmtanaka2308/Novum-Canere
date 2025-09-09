@@ -118,22 +118,42 @@ export default function SetupPage() {
             }
 
             setStatus("Saving song details to database…");
-            const { error: insertErr } = await supabase.from("songs").insert({
+            const { data: song, error: insertErr } = await supabase.from("songs").insert({
                 user_id: session.user.id,
                 track_name: songData.trackName,
                 artist_name: songData.artistName,
                 lrc_text: songData.plainLyrics,
                 lrc_parsed: lrc_parsed,
                 audio_original_path: storagePath,
-            });
+            }).select('id').single();
 
             if (insertErr) {
                 throw insertErr;
             }
 
+            if (!song) {
+                throw new Error("Failed to retrieve song after creation.");
+            }
+
+            setStatus("Separating audio stems... (this may take a few minutes)");
+            const formData = new FormData();
+            formData.append("id", song.id);
+            formData.append("filename", audioFile.name);
+
+            const separateResponse = await fetch("http://localhost:8000/separate", {
+                method: "POST",
+                body: formData,
+            });
+
+            if (!separateResponse.ok) {
+                const errorData = await separateResponse.json();
+                throw new Error(errorData.detail || "Failed to separate audio.");
+            }
+
+            setStatus("✅ Song saved and processed successfully!");
             const { data: pub } = supabase.storage.from(BUCKET).getPublicUrl(storagePath);
             setUploadedUrl(pub.publicUrl);
-            setStatus("✅ Song saved successfully!");
+
 
         } catch (err: any) {
             console.error("Full error:", err);

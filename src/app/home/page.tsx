@@ -25,7 +25,6 @@ export default function Home() {
       console.log(params)
       const res = await fetch(`/api/lrclib?${params.toString()}`)
       const songs = await res.json()
-      console.log("songs>>>>>>>>>>>>>>>>>>>>>", songs)
       setSongs(songs)
     } catch (error) {
       console.error("no songs found!!!", error)

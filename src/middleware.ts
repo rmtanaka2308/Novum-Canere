@@ -2,7 +2,7 @@
 import { NextResponse } from "next/server";
 import { createServerClient } from "@supabase/ssr";
 
-export async function middleware() {
+export async function middleware(req: Request) {
     const res = NextResponse.next();
 
     const supabase = createServerClient(
@@ -20,7 +20,6 @@ export async function middleware() {
         }
     );
 
-    // Touch auth to refresh session cookies if needed
     await supabase.auth.getUser();
     return res;
 }

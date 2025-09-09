@@ -14,6 +14,7 @@ type SongRow = {
     lrc_text: string | null
     lrc_parsed: LrcLine[] | null
     audio_original_path: string | null
+    audio_instrumental_path: string | null
 }
 
 function parseLrc(lrc: string): LrcLine[] {
@@ -82,15 +83,17 @@ export default function KaraokePage() {
             try {
                 const { data, error } = await supabase
                     .from("songs")
-                    .select("id, track_name, artist_name, lrc_text, lrc_parsed, audio_original_path")
+                    .select("id, track_name, artist_name, lrc_text, lrc_parsed, audio_original_path, audio_instrumental_path")
                     .eq("id", params.id)
                     .maybeSingle<SongRow>()
                 if (error) throw error
                 if (!data) return notFound()
                 setSong(data)
 
-                if (data.audio_original_path) {
-                    const { data: pub } = supabase.storage.from("audio").getPublicUrl(data.audio_original_path)
+                const audioPath = data.audio_instrumental_path || data.audio_original_path;
+
+                if (audioPath) {
+                    const { data: pub } = supabase.storage.from("audio").getPublicUrl(audioPath)
                     setAudioUrl(pub.publicUrl)
                 } else {
                     setError("No audio path saved for this song.")
@@ -135,6 +138,18 @@ export default function KaraokePage() {
             if (rafRef.current) cancelAnimationFrame(rafRef.current)
         }
     }, [isPlaying, lines, currentIdx])
+
+    useEffect(() => {
+        const audio = audioRef.current;
+        // Cleanup function to run when the component unmounts
+        return () => {
+            if (audio) {
+                audio.pause();
+                audio.src = '';
+                audio.load();
+            }
+        };
+    }, []); // Empty dependency array means this runs once on mount and cleanup on unmount
 
     const onPlayPause = async () => {
         const audio = audioRef.current

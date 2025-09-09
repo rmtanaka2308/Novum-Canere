@@ -14,9 +14,7 @@ export default function AuthCallback() {
             process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
         );
 
-        // This reads the URL hash (#access_token=...) and stores the session
         supabase.auth.getSession().then(({ data: { session } }) => {
-            // optional: you could store user info/state here
             router.replace(session ? "/home" : "/");
         });
     }, [router]);

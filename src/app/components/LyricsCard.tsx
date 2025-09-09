@@ -22,7 +22,6 @@ export function LyricsModal({ isOpen, onClose, trackName, artistName, plainLyric
     const hasBothTypes = plainLyrics && syncedLyrics
 
     const handleStartKaraoke = () => {
-        // Store song data in localStorage for the setup page
         const songData = {
             trackName,
             artistName,
@@ -36,7 +35,6 @@ export function LyricsModal({ isOpen, onClose, trackName, artistName, plainLyric
     return (
         <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 z-50">
             <div className="bg-white rounded-lg max-w-2xl w-full max-h-[80vh] flex flex-col">
-                {/* Header */}
                 <div className="flex items-center justify-between p-6 border-b border-gray-200">
                     <div>
                         <h2 className="text-xl font-medium text-gray-900">{trackName}</h2>
@@ -47,7 +45,6 @@ export function LyricsModal({ isOpen, onClose, trackName, artistName, plainLyric
                     </button>
                 </div>
 
-                {/* Toggle Controls */}
                 {hasBothTypes && (
                     <div className="p-6 border-b border-gray-200">
                         <div className="flex items-center space-x-4">
@@ -72,7 +69,6 @@ export function LyricsModal({ isOpen, onClose, trackName, artistName, plainLyric
                     </div>
                 )}
 
-                {/* Lyrics Content */}
                 <div className="flex-1 overflow-y-auto p-6">
                     {hasLyrics ? (
                         <div className="space-y-4">
